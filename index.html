@@ -3,364 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise Security & Logic Assessment Portal</title>
-    <style>
-        :root {
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --accent: #2563eb;
-            --danger: #dc2626;
-            --text-main: #0f172a;
-            --text-dim: #475569;
-            --border: #cbd5e1;
-        }
-        * { box-sizing: border-box; }
-        body {
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            color: var(--text-main);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 15px;
-        }
-        .container {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-top: 6px solid var(--accent);
-            padding: 35px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 520px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        h2 { color: var(--accent); margin-top: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
-        p { font-size: 15px; color: var(--text-dim); font-weight: 500; }
-        input, select {
-            width: 100%;
-            padding: 14px;
-            margin: 12px 0;
-            background-color: #f8fafc;
-            border: 2px solid var(--border);
-            color: var(--text-main);
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        input:focus, select:focus {
-            border-color: var(--accent);
-            background-color: #fff;
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-        }
-        .btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 15px;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-            transition: 0.2s;
-        }
-        .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4); }
-        .option-btn {
-            width: 100%;
-            padding: 14px;
-            margin: 10px 0;
-            background-color: #f1f5f9;
-            border: 2px solid var(--border);
-            color: var(--text-main);
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: left;
-            transition: 0.2s;
-        }
-        .option-btn:hover {
-            border-color: var(--accent);
-            background-color: #e0e7ff;
-        }
-        .hidden { display: none !important; }
-        .danger-text { color: var(--danger); font-weight: 700; }
-        .timer-box { font-size: 32px; color: var(--accent); font-weight: 800; margin: 15px 0; }
-    </style>
+    <title>Enterprise Security Gateway v6.0</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container" id="mainContainer">
-        <!-- سٹیپ 1: پروفیشنل کریمی وائٹ فارم -->
-        <div id="stepForm">
-            <h2>🏢 ENTERPRISE GATEWAY</h2>
-            <p>Verify your credentials to launch the automated assessment module.</p>
+    <div class="glass-container" id="mainContainer">
+        <!-- سٹیپ 1: یوزر ان پٹ فارم -->
+        <div id="stepForm" class="panel animate-fade">
+            <div class="logo-badge">🛡️</div>
+            <h2>Enterprise Security Access</h2>
+            <p>Please authenticate your credentials to initiate the session.</p>
             
-            <input type="text" id="userName" placeholder="Enter Full Name (e.g., Hashim)" required>
-            <input type="number" id="userAge" placeholder="Enter Age (e.g., 21)" required>
-            <input type="text" id="userClass" placeholder="Enter Degree / Class (e.g., BS Engineering)" required>
+            <div class="input-group">
+                <input type="text" id="userName" placeholder=" " required>
+                <label for="userName">Enter Your Name</label>
+            </div>
             
-            <button class="btn" onclick="initiatePrank()">Proceed to System Check</button>
+            <div class="input-group">
+                <input type="number" id="userAge" placeholder=" " required>
+                <label for="userAge">Enter Your Age</label>
+            </div>
+            
+            <button class="fluent-btn" onclick="initiatePrank()">Next &rarr;</button>
         </div>
 
-        <!-- سٹیپ 2: کوئسچن انٹرفیس -->
-        <div id="stepQuiz" class="hidden">
-            <h2 id="qStatus">⚠️ SYSTEM LOCK ENFORCED</h2>
-            <p id="targetCategory" style="font-size: 13px; color: var(--accent); font-weight: bold; text-transform: uppercase; letter-spacing: 1px;"></p>
-            <p id="questionText" style="font-size: 18px; color: var(--text-main); margin: 20px 0; font-weight: 700;"></p>
+        <!-- سٹیپ 2: کوئسچن اور 3 آپشنز -->
+        <div id="stepQuiz" class="panel hidden animate-fade">
+            <div class="warning-badge">⚠️ LOCK ACTIVE</div>
+            <h2 id="qTitle">Basic Arithmetic Assessment</h2>
+            <p id="questionText" class="question-box"></p>
             
-            <div id="optionsContainer"></div>
-            
-            <p id="errorMsg" class="danger-text" style="margin-top: 15px;"></p>
+            <div id="optionsContainer" class="options-grid"></div>
+            <p id="errorMsg" class="error-text"></p>
         </div>
 
         <!-- سٹیپ 3: 20 سیکنڈز کاؤنٹ ڈاؤن -->
-        <div id="stepCountdown" class="hidden">
-            <h2>🎉 LEVEL VERIFIED</h2>
-            <p class="danger-text">Prepare for next evaluation matrix...</p>
-            <div class="timer-box" id="timerDisplay">20</div>
-            <p>Auto-advancing to subsequent challenge.</p>
+        <div id="stepCountdown" class="hidden animate-fade">
+            <div class="success-badge">✅ SUCCESS</div>
+            <h2>Correct Answer Verified</h2>
+            <p class="safe-note">You solved this question successfully. Now ready for next question after 20 seconds.</p>
+            <div class="timer-display" id="timerDisplay">20</div>
+            <p class="footer-note">This is just for fun. Secure and safe.</p>
         </div>
     </div>
 
-    <script>
-        let userName = "";
-        let userAge = 18;
-        let userClass = "";
-        let speechInterval = null;
-        let alarmInterval = null;
-        let isLocked = true;
-        let audioCtx = null;
-
-        // کان پھاڑنے والا ایمرجنسی الارم جنریٹر (بیپ ساؤنڈ جو کانوں کو چیرتا ہے)
-        function playEmergencyAlarm() {
-            try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-
-                osc.type = 'sawtooth'; // ہائی پچ شورو مچانے والی ویو
-                osc.frequency.setValueAtTime(880, audioCtx.currentTime); // ہائی فریکوینسی
-                osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.15);
-
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.15);
-            } catch(e) {}
-        }
-
-        // بغیر سانس لیے مسلسل نام دہرانے والا فیچر (Continuous Speech)
-        function speakContinuous(textToSpeak) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                let utterance = new SpeechSynthesisUtterance(textToSpeak);
-                utterance.rate = 1.3; // تیز رفتار تاکہ سانس نہ لے
-                utterance.pitch = 1.0;
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        // ایج اور کلاس کے حساب سے سوالات کے کیٹگریز
-        function getQuestionsForUser(age, classStr) {
-            const text = classStr.toLowerCase();
-            const isAdvanced = age >= 18 || text.includes('bs') || text.includes('engineering') || text.includes('university') || text.includes('mcs') || text.includes('computer');
-
-            if (isAdvanced) {
-                // ایڈوانس لیول (بی ایس / انجینئرنگ کے طالب علم کے لیے)
-                return [
-                    {
-                        q: "What is the time complexity of searching an element in a balanced Binary Search Tree (BST)?",
-                        options: ["O(n)", "O(log n)", "O(n^2)"],
-                        correct: 1,
-                        level: "Advanced Engineering Level"
-                    },
-                    {
-                        q: "In C++, which keyword is used to prevent a class from being inherited?",
-                        options: ["static", "final", "private"],
-                        correct: 1,
-                        level: "Advanced C++ Core"
-                    },
-                    {
-                        q: "What does TCP stand for in networking architecture?",
-                        options: ["Transmission Control Protocol", "Transfer Computer Packet", "Transmission Core Program"],
-                        correct: 0,
-                        level: "Network Engineering"
-                    },
-                    {
-                        q: "Evaluate the bitwise operation: 5 & 3 in binary logic.",
-                        options: ["1", "5", "7"],
-                        correct: 0,
-                        level: "Low-Level System Logic"
-                    }
-                ];
-            } else {
-                // اسکول یا چھوٹے بچوں کے لیے
-                return [
-                    {
-                        q: "What is 12 multiplied by 5?",
-                        options: ["50", "60", "70"],
-                        correct: 1,
-                        level: "General Mathematics"
-                    },
-                    {
-                        q: "Which planet is known as the Red Planet?",
-                        options: ["Venus", "Mars", "Jupiter"],
-                        correct: 1,
-                        level: "General Science"
-                    },
-                    {
-                        q: "What is the capital of Pakistan?",
-                        options: ["Karachi", "Lahore", "Islamabad"],
-                        correct: 2,
-                        level: "Geography"
-                    }
-                ];
-            }
-        }
-
-        let currentQuestionsList = [];
-        let currentQIndex = 0;
-
-        function initiatePrank() {
-            const nameInput = document.getElementById('userName').value.trim();
-            const ageInput = parseInt(document.getElementById('userAge').value);
-            const classInput = document.getElementById('userClass').value.trim();
-
-            if(nameInput === "" || isNaN(ageInput) || classInput === "") {
-                alert("Please fill in all credentials properly!");
-                return;
-            }
-
-            userName = nameInput;
-            userAge = ageInput;
-            userClass = classInput;
-
-            // یوزر کے حساب سے کوئسچنز لوڈ کریں
-            currentQuestionsList = getQuestionsForUser(userAge, userClass);
-
-            // فل سکرین ان ایبل کریں
-            try { document.documentElement.requestFullscreen(); } catch(e) {}
-
-            document.getElementById('stepForm').classList.add('hidden');
-            document.getElementById('stepQuiz').classList.remove('hidden');
-
-            loadQuestion();
-        }
-
-        function loadQuestion() {
-            isLocked = true;
-            document.getElementById('errorMsg').innerText = "";
-            
-            const currentQ = currentQuestionsList[currentQIndex % currentQuestionsList.length];
-            document.getElementById('targetCategory').innerText = `Category: ${currentQ.level}`;
-            document.getElementById('questionText').innerText = currentQ.q;
-
-            const optContainer = document.getElementById('optionsContainer');
-            optContainer.innerHTML = "";
-
-            currentQ.options.forEach((optText, index) => {
-                const btn = document.createElement('button');
-                btn.className = "option-btn";
-                btn.innerText = `${String.fromCharCode(65 + index)}. ${optText}`;
-                btn.onclick = () => checkSelectedOption(index, currentQ.correct);
-                optContainer.appendChild(btn);
-            });
-
-            // پہلی بار بولے گا: "Hashim, solve this question"
-            speakContinuous(`${userName}, solve this question right now!`);
-
-            // مسلسل نام دہرانے اور ایمرجنسی الارم کا لوپ
-            if(speechInterval) clearInterval(speechInterval);
-            if(alarmInterval) clearInterval(alarmInterval);
-
-            // ہر 3.5 سیکنڈ بعد مسلسل نام دہرائے گا (بغیر سانس لیے)
-            speechInterval = setInterval(() => {
-                if(isLocked) {
-                    speakContinuous(`${userName} ${userName} ${userName} ${userName}!`);
-                }
-            }, 3500);
-
-            // ہر 1.2 سیکنڈ بعد کان پھاڑنے والا الارم بچے گا
-            alarmInterval = setInterval(() => {
-                if(isLocked) {
-                    playEmergencyAlarm();
-                }
-            }, 1200);
-        }
-
-        function checkSelectedOption(selectedIndex, correctIndex) {
-            if(selectedIndex === correctIndex) {
-                // صحیح جواب!
-                isLocked = false;
-                clearInterval(speechInterval);
-                clearInterval(alarmInterval);
-                window.speechSynthesis.cancel();
-
-                if (document.fullscreenElement) {
-                    document.exitFullscreen().catch(err => {});
-                }
-
-                document.getElementById('stepQuiz').classList.add('hidden');
-                document.getElementById('stepCountdown').classList.remove('hidden');
-
-                startCountdownTimer();
-
-            } else {
-                // غلط جواب!
-                document.getElementById('errorMsg').innerText = "Incorrect Option! Alarm intensifies. Try again!";
-                playEmergencyAlarm();
-                speakContinuous(`Wrong choice ${userName}! System locked!`);
-            }
-        }
-
-        function startCountdownTimer() {
-            let timeLeft = 20;
-            const timerDisplay = document.getElementById('timerDisplay');
-            timerDisplay.innerText = timeLeft;
-
-            let timerInterval = setInterval(() => {
-                timeLeft--;
-                timerDisplay.innerText = timeLeft;
-
-                if(timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    currentQIndex++;
-                    document.getElementById('stepCountdown').classList.add('hidden');
-                    document.getElementById('stepQuiz').classList.remove('hidden');
-                    
-                    try { document.documentElement.requestFullscreen(); } catch(e) {}
-                    loadQuestion();
-                }
-            }, 1000);
-        }
-
-        // ویب سائٹ بند کرنے یا کٹنے سے روکنے کا پھندا
-        window.addEventListener('beforeunload', function (e) {
-            if(isLocked) {
-                e.preventDefault();
-                e.returnValue = '';
-            }
-        });
-    </script>
-
+    <script src="script.js"></script>
 </body>
 </html>
