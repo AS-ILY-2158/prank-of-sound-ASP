@@ -1,0 +1,187 @@
+:root {
+    --bg-gradient: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(255, 255, 255, 1);
+    --accent: #0067c0;
+    --accent-hover: #005a9e;
+    --danger: #d13438;
+    --success: #107c10;
+    --text-main: #1f2937;
+    --text-dim: #4b5563;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    background: var(--bg-gradient);
+    color: var(--text-main);
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    transition: background-color 0.4s ease;
+}
+
+body.red-flash {
+    background-color: rgba(209, 52, 56, 0.25) !important;
+}
+
+body.green-flash {
+    background-color: rgba(16, 124, 16, 0.2) !important;
+}
+
+.glass-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    padding: 40px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.1);
+    animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.logo-badge, .warning-badge, .success-badge {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.warning-badge { color: var(--danger); font-size: 14px; font-weight: 700; letter-spacing: 1px; }
+.success-badge { color: var(--success); font-size: 14px; font-weight: 700; letter-spacing: 1px; }
+
+h2 {
+    color: var(--text-main);
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+p {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+/* Floating Input Style (Windows 11 Fluent) */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 16px;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+    color: var(--text-main);
+    outline: none;
+    transition: all 0.2s;
+}
+
+.input-group input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 103, 192, 0.15);
+}
+
+.input-group label {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ffffff;
+    padding: 0 4px;
+    color: #6b7280;
+    font-size: 14px;
+    pointer-events: none;
+    transition: 0.2s ease all;
+}
+
+.input-group input:focus ~ label,
+.input-group input:not(:placeholder-shown) ~ label {
+    top: 0;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.fluent-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--accent);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    box-shadow: 0 4px 12px rgba(0, 103, 192, 0.2);
+}
+
+.fluent-btn:hover { background-color: var(--accent-hover); }
+.fluent-btn:active { transform: scale(0.98); }
+
+.question-box {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 20px 0;
+}
+
+.options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option-btn {
+    width: 100%;
+    padding: 14px;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-main);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.option-btn:hover {
+    border-color: var(--accent);
+    background: #f0f4f8;
+}
+
+.error-text {
+    color: var(--danger);
+    font-weight: 700;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.timer-display {
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--accent);
+    margin: 15px 0;
+}
+
+.safe-note { font-size: 13px; color: var(--text-dim); }
+.footer-note { font-size: 12px; color: #9ca3af; margin-top: 15px; font-style: italic; }
+
+.hidden { display: none !important; }
