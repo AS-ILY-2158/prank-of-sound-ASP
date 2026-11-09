@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core Engineering & Logic Assessment v5.0</title>
+    <style>
+        :root {
+            --bg-color: #05070b;
+            --card-bg: #0f1624;
+            --accent: #00ffcc;
+            --danger: #ff3366;
+            --text-main: #f0f6fc;
+            --text-dim: #8b949e;
+            --border: #21262d;
+        }
+        * { box-sizing: border-box; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 15px;
+        }
+        .container {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-top: 4px solid var(--accent);
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        }
+        h2 { color: var(--accent); margin-top: 0; font-size: 22px; }
+        p { font-size: 14px; color: var(--text-dim); }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 12px 0;
+            background-color: #05070b;
+            border: 1px solid var(--border);
+            color: #fff;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+        input:focus, select:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent);
+            color: #05070b;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.2s;
+        }
+        .btn:hover { background-color: #00b38f; }
+        .option-btn {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            background-color: #161b22;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.2s;
+        }
+        .option-btn:hover {
+            border-color: var(--accent);
+            background-color: #1f2937;
+        }
+        .hidden { display: none !important; }
+        .danger-text { color: var(--danger); font-weight: bold; }
+        .timer-box { font-size: 24px; color: var(--accent); font-weight: bold; margin: 15px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainContainer">
+        <!-- سٹیپ 1: یوزر رجسٹریشن فارم -->
+        <div id="stepForm">
+            <h2>🛡️ SECURE TERMINAL GATEWAY</h2>
+            <p>Enter your credentials to initiate system diagnostics.</p>
+            
+            <input type="text" id="userName" placeholder="Enter your full name (e.g., Hashim)" required>
+            <input type="number" id="userAge" placeholder="Enter your age">
+            <input type="text" id="userClass" placeholder="Enter your degree / class">
+            
+            <button class="btn" onclick="initiatePrank()">Initialize Diagnostics</button>
+        </div>
+
+        <!-- سٹیپ 2: کوئسچن اور 3 آپشنز -->
+        <div id="stepQuiz" class="hidden">
+            <h2 id="qStatus">⚠️ SECURITY LOCK ACTIVE</h2>
+            <p id="questionText" style="font-size: 16px; color: #fff; margin: 20px 0; font-weight: bold;"></p>
+            
+            <div id="optionsContainer"></div>
+            
+            <p id="errorMsg" class="danger-text" style="margin-top: 15px;"></p>
+        </div>
+
+        <!-- سٹیپ 3: 20 سیکنڈ کاؤنٹ ڈاؤن ٹائمر بینرز -->
+        <div id="stepCountdown" class="hidden">
+            <h2>🎉 CORRECT! LEVEL CLEARED</h2>
+            <p class="danger-text">Be ready for the next question...</p>
+            <div class="timer-box" id="timerDisplay">20</div>
+            <p>System will auto-load next challenge shortly.</p>
+        </div>
+    </div>
+
+    <script>
+        let userName = "";
+        let speechInterval = null;
+        let isLocked = true;
+
+        // کوئسچنز کا ڈیٹا بیس (ہر بار نیا اور الگ کوئسچن)
+        const questionsList = [
+            {
+                q: "What is the output of the expression: 5 + 3 * 8 ?",
+                options: ["64", "29", "44"],
+                correct: 1 // 29
+            },
+            {
+                q: "What is the result of: 100 + 200 * 3 ?",
+                options: ["900", "700", "600"],
+                correct: 1 // 700
+            },
+            {
+                q: "Evaluate: (12 / 4) + (2 * 3) ?",
+                options: ["9", "12", "18"],
+                correct: 0 // 9
+            },
+            {
+                q: "What is the memory size of a standard 'int' in 64-bit C++?",
+                options: ["2 Bytes", "4 Bytes", "8 Bytes"],
+                correct: 1 // 4 Bytes
+            },
+            {
+                q: "Which data structure operates on a LIFO (Last In, First Out) basis?",
+                options: ["Queue", "Stack", "Array"],
+                correct: 1 // Stack
+            }
+        ];
+
+        let currentQIndex = 0;
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                let utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 1.0;
+                utterance.pitch = 1.1;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function initiatePrank() {
+            const nameInput = document.getElementById('userName').value.trim();
+            if(nameInput === "") {
+                alert("Please enter your name!");
+                return;
+            }
+            userName = nameInput;
+
+            // فل سکرین موڈ ان ایبل کریں (موبائل اور لیپ ٹاپ دونوں پر)
+            try {
+                document.documentElement.requestFullscreen();
+            } catch(e) {}
+
+            document.getElementById('stepForm').classList.add('hidden');
+            document.getElementById('stepQuiz').classList.remove('hidden');
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            isLocked = true;
+            document.getElementById('errorMsg').innerText = "";
+            
+            // کوئسچن اٹھائیں
+            const currentQ = questionsList[currentQIndex % questionsList.length];
+            document.getElementById('questionText').innerText = currentQ.q;
+
+            const optContainer = document.getElementById('optionsContainer');
+            optContainer.innerHTML = "";
+
+            currentQ.options.forEach((optText, index) => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn";
+                btn.innerText = `${String.fromCharCode(65 + index)}. ${optText}`;
+                btn.onclick = () => checkSelectedOption(index, currentQ.correct);
+                optContainer.appendChild(btn);
+            });
+
+            // بولنا شروع کریں
+            speakText(`${userName}, solve this question right now!`);
+            
+            // بار بار نام دہرانے کا لوپ جب تک حل نہ ہو
+            if(speechInterval) clearInterval(speechInterval);
+            speechInterval = setInterval(() => {
+                if(isLocked) {
+                    speakText(`${userName} ${userName} ${userName}! Solve the question!`);
+                }
+            }, 6000);
+        }
+
+        function checkSelectedOption(selectedIndex, correctIndex) {
+            if(selectedIndex === correctIndex) {
+                // صحیح جواب!
+                isLocked = false;
+                clearInterval(speechInterval);
+                window.speechSynthesis.cancel();
+
+                // فل سکرین اور لاک ختم کریں تاکہ وہ ویب سائٹ بند کر سکے یا والیوم ڈاؤن کر سکے
+                if (document.fullscreenElement) {
+                    document.exitFullscreen().catch(err => {});
+                }
+
+                // اب 20 سیکنڈ کاؤنٹ ڈاؤن سکرین دکھائیں
+                document.getElementById('stepQuiz').classList.add('hidden');
+                document.getElementById('stepCountdown').classList.remove('hidden');
+
+                startCountdownTimer();
+
+            } else {
+                // غلط جواب!
+                document.getElementById('errorMsg').innerText = "Incorrect Option! System remains locked. Try again!";
+                speakText(`Wrong choice ${userName}! Try another option!`);
+            }
+        }
+
+        function startCountdownTimer() {
+            let timeLeft = 20;
+            const timerDisplay = document.getElementById('timerDisplay');
+            timerDisplay.innerText = timeLeft;
+
+            let timerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.innerText = timeLeft;
+
+                if(timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    // اگلا کوئسچن لوڈ کریں اور دوبارہ لاک لگا دیں
+                    currentQIndex++;
+                    document.getElementById('stepCountdown').classList.add('hidden');
+                    document.getElementById('stepQuiz').classList.remove('hidden');
+                    
+                    // دوبارہ فل سکرین کریں
+                    try { document.documentElement.requestFullscreen(); } catch(e) {}
+
+                    loadQuestion();
+                }
+            }, 1000);
+        }
+
+        // ویب سائٹ بند کرنے یا ٹیب کاٹنے سے روکنے کا سکیورٹی پھندا
+        window.addEventListener('beforeunload', function (e) {
+            if(isLocked) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    </script>
+
+</body>
+</html>
